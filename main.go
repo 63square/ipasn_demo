@@ -5,13 +5,13 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"net"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
 
 	pb "github.com/63square/ipasn_demo/proto"
+	"github.com/valyala/fasthttp"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -73,6 +73,7 @@ var ErrLookupTimeout = errors.New("timeout waiting for response")
 
 func lookupIp(s grpc.BidiStreamingClient[pb.IpQuery, pb.IpResult], remoteAddr string) (*pb.IpResult, error) {
 	respCh := make(chan *pb.IpResult, 1)
+
 	repliesMu.Lock()
 	pendingReplies[remoteAddr] = respCh
 	repliesMu.Unlock()
@@ -82,6 +83,7 @@ func lookupIp(s grpc.BidiStreamingClient[pb.IpQuery, pb.IpResult], remoteAddr st
 		Ip: remoteAddr,
 	})
 	sendMu.Unlock()
+
 	if err != nil {
 		return nil, err
 	}
@@ -93,38 +95,40 @@ func lookupIp(s grpc.BidiStreamingClient[pb.IpQuery, pb.IpResult], remoteAddr st
 		repliesMu.Lock()
 		delete(pendingReplies, remoteAddr)
 		repliesMu.Unlock()
+
 		return nil, ErrLookupTimeout
 	}
 }
 
-func httpHandler(w http.ResponseWriter, r *http.Request) {
+func requestHandler(ctx *fasthttp.RequestCtx) {
 	s, err := getOrCreateStream()
 	if err != nil {
-		http.Error(w, "gRPC stream error: "+err.Error(), http.StatusInternalServerError)
+		fmt.Print(ctx, "Internal Server Error")
+		ctx.SetStatusCode(http.StatusInternalServerError)
+		log.Println(err)
 		return
 	}
 
-	remoteAddr := strings.TrimSpace(r.Header.Get("X-Test-IP"))
-	if remoteAddr == "" {
-		remoteAddr, _, err = net.SplitHostPort(r.RemoteAddr)
-		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-			log.Println(err)
-			return
-		}
+	start := time.Now()
+
+	remoteAddr := ctx.RemoteIP().String()
+
+	testIpHeaders := ctx.Request.Header.PeekAll("X-Test-IP")
+	if len(testIpHeaders) > 0 {
+		remoteAddr = strings.TrimSpace(string(testIpHeaders[0]))
 	}
 
-	start := time.Now()
 	ipInfo, err := lookupIp(s, remoteAddr)
 	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		fmt.Print(ctx, "Internal Server Error")
+		ctx.SetStatusCode(http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
 
 	enlapsed := time.Since(start).Microseconds()
 
-	fmt.Fprintf(w, "Looked up %s in %dus : %+v", ipInfo.Ip, enlapsed, ipInfo.Response)
+	fmt.Fprintf(ctx, "Looked up %s in %dus : %+v", ipInfo.Ip, enlapsed, ipInfo.Response)
 }
 
 func main() {
@@ -134,7 +138,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.HandleFunc("/", httpHandler)
+	log.Println("Listening on http://127.0.0.1:8080")
 
-	log.Fatal(http.ListenAndServe("127.0.0.1:8080", nil))
+	if err := fasthttp.ListenAndServe("127.0.0.1:8080", requestHandler); err != nil {
+		log.Fatalf("Error in ListenAndServe: %v", err)
+	}
 }
