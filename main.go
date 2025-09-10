@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	pb "github.com/63square/ipasn_demo/proto"
+	pb "github.com/63square/ipasn_demo/proto/lookup"
 	"github.com/valyala/fasthttp"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

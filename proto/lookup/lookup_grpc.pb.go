@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.32.0
-// source: proto/lookup.proto
+// source: proto/lookup/lookup.proto
 
 package proto
 
@@ -150,5 +150,5 @@ var Lookup_ServiceDesc = grpc.ServiceDesc{
 			ClientStreams: true,
 		},
 	},
-	Metadata: "proto/lookup.proto",
+	Metadata: "proto/lookup/lookup.proto",
 }

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.8
 // 	protoc        v6.32.0
-// source: proto/lookup.proto
+// source: proto/lookup/lookup.proto
 
 package proto
 
@@ -30,7 +30,7 @@ type IpQuery struct {
 
 func (x *IpQuery) Reset() {
 	*x = IpQuery{}
-	mi := &file_proto_lookup_proto_msgTypes[0]
+	mi := &file_proto_lookup_lookup_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -42,7 +42,7 @@ func (x *IpQuery) String() string {
 func (*IpQuery) ProtoMessage() {}
 
 func (x *IpQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_lookup_proto_msgTypes[0]
+	mi := &file_proto_lookup_lookup_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -55,7 +55,7 @@ func (x *IpQuery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpQuery.ProtoReflect.Descriptor instead.
 func (*IpQuery) Descriptor() ([]byte, []int) {
-	return file_proto_lookup_proto_rawDescGZIP(), []int{0}
+	return file_proto_lookup_lookup_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *IpQuery) GetIp() string {
@@ -75,13 +75,14 @@ type IpResponse struct {
 	Asn           uint32                 `protobuf:"varint,6,opt,name=asn,proto3" json:"asn,omitempty"`
 	AsName        string                 `protobuf:"bytes,7,opt,name=as_name,json=asName,proto3" json:"as_name,omitempty"`
 	AsDomain      string                 `protobuf:"bytes,8,opt,name=as_domain,json=asDomain,proto3" json:"as_domain,omitempty"`
+	Tags          []string               `protobuf:"bytes,9,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *IpResponse) Reset() {
 	*x = IpResponse{}
-	mi := &file_proto_lookup_proto_msgTypes[1]
+	mi := &file_proto_lookup_lookup_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -93,7 +94,7 @@ func (x *IpResponse) String() string {
 func (*IpResponse) ProtoMessage() {}
 
 func (x *IpResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_lookup_proto_msgTypes[1]
+	mi := &file_proto_lookup_lookup_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -106,7 +107,7 @@ func (x *IpResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpResponse.ProtoReflect.Descriptor instead.
 func (*IpResponse) Descriptor() ([]byte, []int) {
-	return file_proto_lookup_proto_rawDescGZIP(), []int{1}
+	return file_proto_lookup_lookup_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *IpResponse) GetNetwork() string {
@@ -165,6 +166,13 @@ func (x *IpResponse) GetAsDomain() string {
 	return ""
 }
 
+func (x *IpResponse) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 type IpResult struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Ip            string                 `protobuf:"bytes,1,opt,name=ip,proto3" json:"ip,omitempty"`
@@ -175,7 +183,7 @@ type IpResult struct {
 
 func (x *IpResult) Reset() {
 	*x = IpResult{}
-	mi := &file_proto_lookup_proto_msgTypes[2]
+	mi := &file_proto_lookup_lookup_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -187,7 +195,7 @@ func (x *IpResult) String() string {
 func (*IpResult) ProtoMessage() {}
 
 func (x *IpResult) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_lookup_proto_msgTypes[2]
+	mi := &file_proto_lookup_lookup_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -200,7 +208,7 @@ func (x *IpResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IpResult.ProtoReflect.Descriptor instead.
 func (*IpResult) Descriptor() ([]byte, []int) {
-	return file_proto_lookup_proto_rawDescGZIP(), []int{2}
+	return file_proto_lookup_lookup_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *IpResult) GetIp() string {
@@ -217,13 +225,13 @@ func (x *IpResult) GetResponse() *IpResponse {
 	return nil
 }
 
-var File_proto_lookup_proto protoreflect.FileDescriptor
+var File_proto_lookup_lookup_proto protoreflect.FileDescriptor
 
-const file_proto_lookup_proto_rawDesc = "" +
+const file_proto_lookup_lookup_proto_rawDesc = "" +
 	"\n" +
-	"\x12proto/lookup.proto\x12\x11grpc.ipasn.lookup\"\x19\n" +
+	"\x19proto/lookup/lookup.proto\x12\x11grpc.ipasn.lookup\"\x19\n" +
 	"\aIpQuery\x12\x0e\n" +
-	"\x02ip\x18\x01 \x01(\tR\x02ip\"\xf0\x01\n" +
+	"\x02ip\x18\x01 \x01(\tR\x02ip\"\x84\x02\n" +
 	"\n" +
 	"IpResponse\x12\x18\n" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x18\n" +
@@ -233,7 +241,8 @@ const file_proto_lookup_proto_rawDesc = "" +
 	"\x0econtinent_code\x18\x05 \x01(\tR\rcontinentCode\x12\x10\n" +
 	"\x03asn\x18\x06 \x01(\rR\x03asn\x12\x17\n" +
 	"\aas_name\x18\a \x01(\tR\x06asName\x12\x1b\n" +
-	"\tas_domain\x18\b \x01(\tR\basDomain\"g\n" +
+	"\tas_domain\x18\b \x01(\tR\basDomain\x12\x12\n" +
+	"\x04tags\x18\t \x03(\tR\x04tags\"g\n" +
 	"\bIpResult\x12\x0e\n" +
 	"\x02ip\x18\x01 \x01(\tR\x02ip\x12>\n" +
 	"\bresponse\x18\x02 \x01(\v2\x1d.grpc.ipasn.lookup.IpResponseH\x00R\bresponse\x88\x01\x01B\v\n" +
@@ -244,24 +253,24 @@ const file_proto_lookup_proto_rawDesc = "" +
 	"LookupMany\x12\x1a.grpc.ipasn.lookup.IpQuery\x1a\x1b.grpc.ipasn.lookup.IpResult\"\x00(\x010\x01B&Z$github.com/63square/ipasn_demo/protob\x06proto3"
 
 var (
-	file_proto_lookup_proto_rawDescOnce sync.Once
-	file_proto_lookup_proto_rawDescData []byte
+	file_proto_lookup_lookup_proto_rawDescOnce sync.Once
+	file_proto_lookup_lookup_proto_rawDescData []byte
 )
 
-func file_proto_lookup_proto_rawDescGZIP() []byte {
-	file_proto_lookup_proto_rawDescOnce.Do(func() {
-		file_proto_lookup_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_lookup_proto_rawDesc), len(file_proto_lookup_proto_rawDesc)))
+func file_proto_lookup_lookup_proto_rawDescGZIP() []byte {
+	file_proto_lookup_lookup_proto_rawDescOnce.Do(func() {
+		file_proto_lookup_lookup_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proto_lookup_lookup_proto_rawDesc), len(file_proto_lookup_lookup_proto_rawDesc)))
 	})
-	return file_proto_lookup_proto_rawDescData
+	return file_proto_lookup_lookup_proto_rawDescData
 }
 
-var file_proto_lookup_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_proto_lookup_proto_goTypes = []any{
+var file_proto_lookup_lookup_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_proto_lookup_lookup_proto_goTypes = []any{
 	(*IpQuery)(nil),    // 0: grpc.ipasn.lookup.IpQuery
 	(*IpResponse)(nil), // 1: grpc.ipasn.lookup.IpResponse
 	(*IpResult)(nil),   // 2: grpc.ipasn.lookup.IpResult
 }
-var file_proto_lookup_proto_depIdxs = []int32{
+var file_proto_lookup_lookup_proto_depIdxs = []int32{
 	1, // 0: grpc.ipasn.lookup.IpResult.response:type_name -> grpc.ipasn.lookup.IpResponse
 	0, // 1: grpc.ipasn.lookup.Lookup.LookupSingle:input_type -> grpc.ipasn.lookup.IpQuery
 	0, // 2: grpc.ipasn.lookup.Lookup.LookupMany:input_type -> grpc.ipasn.lookup.IpQuery
@@ -274,27 +283,27 @@ var file_proto_lookup_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_proto_lookup_proto_init() }
-func file_proto_lookup_proto_init() {
-	if File_proto_lookup_proto != nil {
+func init() { file_proto_lookup_lookup_proto_init() }
+func file_proto_lookup_lookup_proto_init() {
+	if File_proto_lookup_lookup_proto != nil {
 		return
 	}
-	file_proto_lookup_proto_msgTypes[2].OneofWrappers = []any{}
+	file_proto_lookup_lookup_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_lookup_proto_rawDesc), len(file_proto_lookup_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_lookup_lookup_proto_rawDesc), len(file_proto_lookup_lookup_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_proto_lookup_proto_goTypes,
-		DependencyIndexes: file_proto_lookup_proto_depIdxs,
-		MessageInfos:      file_proto_lookup_proto_msgTypes,
+		GoTypes:           file_proto_lookup_lookup_proto_goTypes,
+		DependencyIndexes: file_proto_lookup_lookup_proto_depIdxs,
+		MessageInfos:      file_proto_lookup_lookup_proto_msgTypes,
 	}.Build()
-	File_proto_lookup_proto = out.File
-	file_proto_lookup_proto_goTypes = nil
-	file_proto_lookup_proto_depIdxs = nil
+	File_proto_lookup_lookup_proto = out.File
+	file_proto_lookup_lookup_proto_goTypes = nil
+	file_proto_lookup_lookup_proto_depIdxs = nil
 }
